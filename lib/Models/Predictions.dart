@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
-import 'package:futictor_football_predictor/secretie/secret.dart';
+import 'package:futictor_football_predictor/secretie/secret.secret.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart';
 
