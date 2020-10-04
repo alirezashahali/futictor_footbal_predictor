@@ -9,7 +9,7 @@
 .history
 .svn/
 secret.json
-secret.dart
+**/secretie
 
 
 # IntelliJ related
