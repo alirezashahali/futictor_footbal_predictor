@@ -9,7 +9,7 @@
 .history
 .svn/
 secret.json
-.lib/secretie/
+**/secretie/
 
 
 # IntelliJ related
