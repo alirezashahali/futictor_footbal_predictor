@@ -51,6 +51,7 @@ class PointsScreen extends StatelessWidget {
 }
 
 Map datasFromHis(Map history) {
+  print('history length');
   print(history.length);
   double pointsAll = 0.0;
   List placeHolder = [];

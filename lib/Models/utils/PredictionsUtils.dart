@@ -21,9 +21,8 @@ String urlTextBuilder(clubSettings, dateFrom, dateTo) {
       }
     }
   }
-  var _url = 'https://api.football-data.org/v2/matches/?competitions=' +
-      _comps +
-      '&dateFrom=' +
+  var _url = 'https://api.football-data.org/v2/matches/?'
+          'dateFrom=' +
       dateFrom.toString() +
       '&' +
       'dateTo=' +

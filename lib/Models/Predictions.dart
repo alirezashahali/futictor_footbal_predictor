@@ -38,9 +38,9 @@ class Predictions with ChangeNotifier {
 
     for (Map pred in maps) {
       returnie[pred['id']] = {
-        'awayTeam': convert.jsonDecode(pred['awayTeam']),
-        'homeTeam': convert.jsonDecode(pred['homeTeam']),
-        'utcDate': convert.jsonDecode(pred['utcDate'])
+        'awayTeam': pred['awayTeam'],
+        'homeTeam': pred['homeTeam'],
+        'utcDate': pred['utcDate']
       };
     }
     _preds = returnie;
@@ -81,6 +81,7 @@ class Predictions with ChangeNotifier {
         'homeTeam': home,
         'utcDate': match['utcDate'],
       };
+      notifyListeners();
       _insertPreds(data);
     }
   }
@@ -95,11 +96,18 @@ class Predictions with ChangeNotifier {
   }
 
   //name of clubs to be watched
-  Map _clubSettings;
+  Map _clubSettings = kClubSettings;
 
   Future<void> settingsReader() async {
     Database db = await database;
-    // List _maps;
+    // _clubSettings = kClubSettings;
+    // notifyListeners();
+    // // List _maps;
+    // await db.insert(
+    //   'settings',
+    //   {'clubs': convert.jsonEncode(_clubSettings), 'id': 1},
+    //   conflictAlgorithm: ConflictAlgorithm.replace,
+    // );
     try {
       List _maps = await db.query('settings');
       print(_maps.length);
@@ -117,6 +125,11 @@ class Predictions with ChangeNotifier {
       }
     } on DatabaseException {
       print('just entered exception!');
+      // await db.insert(
+      //   'settings',
+      //   {'clubs': convert.jsonEncode(_clubSettings), 'id': 1},
+      //   conflictAlgorithm: ConflictAlgorithm.replace,
+      // );
     }
   }
 
@@ -191,15 +204,15 @@ class Predictions with ChangeNotifier {
 
   Future<void> initHistory() async {
     final Database db = await database;
-    final List<Map> maps = await db.query('preds');
+    final List<Map> maps = await db.query('history');
     Map _returnie = {};
     for (Map map in maps) {
       _returnie[map['id']] = {
         'id': map['id'],
-        'home': decode(map['home']),
-        'away': decode(map['away']),
-        'pred': decode(map['pred']),
-        'result': decode(map['result']),
+        'home': convert.jsonDecode(map['home']),
+        'away': convert.jsonDecode(map['away']),
+        'pred': convert.jsonDecode(map['pred']),
+        'result': convert.jsonDecode(map['result']),
         'utcDate': map['utcDate'],
         'point': map['point']
       };
@@ -225,6 +238,7 @@ class Predictions with ChangeNotifier {
   }
 
   void popInfoForHisReq() {
+    _infoForHisReq = {'ids': []};
     if (_preds.length > 0) {
       DateTime minDate = DateTime.now().toUtc();
       DateTime maxDate;

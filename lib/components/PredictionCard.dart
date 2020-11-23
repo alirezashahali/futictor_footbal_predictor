@@ -85,6 +85,8 @@ class _PredictionCardState extends State<PredictionCard> {
   @override
   Widget build(BuildContext context) {
     Predictions Pred = Provider.of<Predictions>(context);
+    print(Pred.preds.length);
+    // print(Pred.preds[widget.match['id']]['homeTeam'].toString());
     stateToController(Pred);
 
     if (widget.match['status'] != 'SCHEDULED' &&

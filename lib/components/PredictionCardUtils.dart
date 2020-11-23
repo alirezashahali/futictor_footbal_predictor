@@ -108,7 +108,7 @@ Widget WaitingForFinalResult(matchId, predictions) {
       )
     ]);
   } else {
-    return Row(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.only(right: 20.0),
@@ -120,9 +120,9 @@ Widget WaitingForFinalResult(matchId, predictions) {
         Text(
           'your prediction' +
               ' ' +
-              predictions['home'].toString() +
+              predictions['homeTeam'].toString() +
               '-' +
-              predictions['away'].toString(),
+              predictions['awayTeam'].toString(),
           style: kInfoText,
         )
       ],

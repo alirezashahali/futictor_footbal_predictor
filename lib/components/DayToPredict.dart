@@ -12,9 +12,12 @@ class DayToPredict extends StatelessWidget {
 
   Future infoAddingProcess(Preds) async {
     // Predictions Preds = Provider.of<Predictions>(context);
+    await Preds.settingsReader();
     await Preds.matchesPopulate();
-    await Preds.popInfoForHisReq();
-    await Preds.CheckForShouldDelete();
+    await Preds.initPreds();
+    await Preds.initHistory();
+    Preds.popInfoForHisReq();
+    Preds.CheckForShouldDelete();
   }
 
   @override
