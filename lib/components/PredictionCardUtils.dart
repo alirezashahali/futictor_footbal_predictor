@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 import '../utils/constants.dart';
 
-Widget clubName(name, context) {
+Widget clubName(name, id, bool rightLeft, context) {
+  var holeWidth = MediaQuery.of(context).size.width / 3;
   return Container(
-    width: MediaQuery.of(context).size.width / 3,
+    width: holeWidth,
+    child: rightLeft
+        ? Row(children: [
+            clubWidg(holeWidth / 4, id),
+            textWidg(holeWidth, name, context),
+          ])
+        : Row(children: [
+            textWidg(holeWidth, name, context),
+            clubWidg(holeWidth / 4, id)
+          ]),
+  );
+}
+
+Widget textWidg(double holeWidth, String name, BuildContext context) {
+  return Container(
+    width: 2 * holeWidth / 3,
+    padding: EdgeInsets.only(right: 5.0),
     child: Text(
       name,
       style: Theme.of(context).textTheme.bodyText1,
@@ -14,6 +32,21 @@ Widget clubName(name, context) {
       textAlign: TextAlign.center,
     ),
   );
+}
+
+Widget clubWidg(double holeWidth, int id) {
+  return Container(
+      width: holeWidth,
+      height: holeWidth,
+      child: SvgPicture.network(
+        'https://crests.football-data.org/' + id.toString() + '.svg',
+        placeholderBuilder: (BuildContext context) => Container(
+          width: holeWidth,
+          height: holeWidth,
+          child: SvgPicture.asset('lib/assets/clubSieldEnhanced.svg',
+              semanticsLabel: 'Acme Logo'),
+        ),
+      ));
 }
 
 Widget predField(controller, otherState, Function commitingPred, String label,
@@ -140,33 +173,12 @@ Widget FinishedGame(Map history, int id) {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            'Your prediction: ' + pred['homeTeam'] + '-' + pred['awayTeam'],
+            'Your prediction: ' +
+                pred['homeTeam'].toString() +
+                '-' +
+                pred['awayTeam'].toString(),
             style: kInfoText,
           ),
-          if (hisI['point'] == 3)
-            Icon(
-              MaterialCommunityIcons.check_all,
-              color: kPrimaryColor,
-              size: kIconSize,
-            ),
-          if (hisI['point'] > 0)
-            Icon(
-              MaterialCommunityIcons.check,
-              color: kSoSoColor,
-              size: kIconSize,
-            ),
-          if (hisI['point'] == -3)
-            Icon(
-              MaterialCommunityIcons.skull_crossbones,
-              color: kDangerColor,
-              size: kIconSize,
-            ),
-          if (hisI['point'] < 0)
-            Icon(
-              MaterialCommunityIcons.skull_crossbones,
-              color: kSoSoColor,
-              size: kIconSize,
-            )
         ],
       ),
     );

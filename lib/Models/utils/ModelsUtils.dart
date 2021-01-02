@@ -1,33 +1,29 @@
 import 'dart:convert' as convert;
 
-String urlBuilderForNextWeek(clubSettings) {
+// String urlBuilderForNextWeek(clubSettings) {
+//   String _dateFrom = DateTime.now().toUtc().toString().split(" ")[0];
+//   String _dateTo =
+//       DateTime.now().toUtc().add(Duration(days: 7)).toString().split(" ")[0];
+//
+//   return urlTextBuilder(clubSettings, _dateFrom, _dateTo);
+// }
+
+String urlBuilderForNextWeekOhneClubSettings() {
+  // todo start of wrong doing
   String _dateFrom = DateTime.now().toUtc().toString().split(" ")[0];
   String _dateTo =
       DateTime.now().toUtc().add(Duration(days: 7)).toString().split(" ")[0];
-
-  return urlTextBuilder(clubSettings, _dateFrom, _dateTo);
+  return urlTextBuilder(_dateFrom, _dateTo);
 }
 
-String urlTextBuilder(clubSettings, dateFrom, dateTo) {
-  String _comps = '';
-
-  List _clubSettingsList = clubSettings.keys.toList();
-  for (int i = 0; i < _clubSettingsList.length; i++) {
-    if (clubSettings[_clubSettingsList[i]]) {
-      if (i == _clubSettingsList.length - 1) {
-        _comps += _clubSettingsList[i];
-      } else {
-        _comps += _clubSettingsList[i] + ',';
-      }
-    }
-  }
-  var _url = 'https://api.football-data.org/v2/matches/?'
-          'dateFrom=' +
+String urlTextBuilder(dateFrom, dateTo) {
+  var _url = 'https://api.football-data.org/v2/matches/?' +
+      'dateFrom=' +
       dateFrom.toString() +
       '&' +
       'dateTo=' +
       dateTo.toString();
-  print(_url);
+  // print(_url);
   return _url;
 }
 
@@ -58,7 +54,7 @@ double pointGiver(result, pred) {
 Map supplierHelper(Map input) {
   Map _outPut = {...input};
   int _diffTeams = input['homeTeam'] - input['awayTeam'];
-
+// home team lost or won or drew
   if (_diffTeams > 0) {
     _outPut['result'] = 1;
   } else if (_diffTeams == 0) {
@@ -123,8 +119,8 @@ double pointCal(result, pred) {
 }
 
 bool isTodayFromUtcDate(utcDate) {
-  return (DateTime.parse(utcDate).toString().split(' ')[0] ==
-      DateTime.now().toUtc().toString().split(' ')[0]);
+  return (DateTime.parse(utcDate).toLocal().toString().split(' ')[0] ==
+      DateTime.now().toLocal().toString().split(' ')[0]);
 }
 
 String encode(input) {
@@ -133,4 +129,8 @@ String encode(input) {
 
 dynamic decode(String input) {
   return convert.jsonDecode(input);
+}
+
+String urlCompetitionTextBuilder(String id){
+  url = "https://api.football-data.org/v2/competitions/" + id + 
 }

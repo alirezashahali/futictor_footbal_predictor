@@ -5,13 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../Models/Predictions.dart';
 
-class ChangeCompetitionsToShow extends StatefulWidget {
-  @override
-  _ChangeCompetitionsToShowState createState() =>
-      _ChangeCompetitionsToShowState();
-}
-
-class _ChangeCompetitionsToShowState extends State<ChangeCompetitionsToShow> {
+class ChangeCompetitionsToShow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Predictions _leaguesToWatchClass =
@@ -48,6 +42,9 @@ Widget eachItemBuilder(
     _leaguesToWatch, _keys, index, context, _leaguesToWatchClass) {
   String leagueName;
   switch (_keys[index]) {
+    case 'allComps':
+      leagueName = 'All Competitions';
+      break;
     case 'PL':
       leagueName = 'Premier League';
       break;
@@ -79,11 +76,23 @@ Widget eachItemBuilder(
           ),
         ),
       ),
-      Switch(
-          activeColor: Theme.of(context).primaryColor,
-          value: _leaguesToWatch[_keys[index]],
-          onChanged: (value) =>
-              _leaguesToWatchClass.clubSettingsToggler(_keys[index]))
+      // a crude way of handeling
+      // the switch works normal for index 0 all Comps but for others it checks if all comps is on
+      // the others turn off else they work as normal
+      if (index == 0)
+        Switch(
+            activeColor: Theme.of(context).primaryColor,
+            value: _leaguesToWatch[_keys[index]],
+            onChanged: (value) =>
+                _leaguesToWatchClass.clubSettingsToggler(_keys[index])),
+      if (index != 0 && _leaguesToWatch[_keys[0]])
+        Switch(value: _leaguesToWatch[_keys[index]], onChanged: null),
+      if (index != 0 && _leaguesToWatch[_keys[0]] == false)
+        Switch(
+            activeColor: Theme.of(context).primaryColor,
+            value: _leaguesToWatch[_keys[index]],
+            onChanged: (value) =>
+                _leaguesToWatchClass.clubSettingsToggler(_keys[index]))
     ]),
   );
 }
